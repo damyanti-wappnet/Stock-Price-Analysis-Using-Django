@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
+    <center>
+    <div class="company">
+        <form action="" method="post">
+            {%csrf_token%}
+            <select name="drop_xc" id="">
+                <option value="AAPL-Apple" {% if selected == 'of Apple' %} selected {% endif %}>Apple</option>
+                <option value="AMZN-Amazon" {% if selected == 'of Amazon' %} selected {% endif %}>Amazon</option>
+                <option value="MSFT-Microsoft" {% if selected == 'of Microsoft' %} selected {% endif %}>Microsoft</option>
+                <option value="META-Facebook" {% if selected == 'of Facebook' %} selected {% endif %}>Facebook</option>
+                <option value="TSLA-Tesla" {% if selected == 'of Tesla' %} selected {% endif %}>Tesla</option>
+                <option value="GOOGL-Google" {% if selected == 'of Google' %} selected {% endif %}>Google</option>
+                <option value="WMT-Walmart" {% if selected == 'of Walmart' %} selected {% endif %}>Walmart</option>
+                <option value="KO-Coca Cola" {% if selected == 'of Coca-Cola' %} selected {% endif %}>Coca-Cola</option>
+                <option value="INTC-Intel Corporation" {% if selected == 'of Intel Corporation' %} selected {% endif %}>Intel Corporation</option>
+                <option value="TCS-Tata Consultancy Services" {% if selected == 'of Tata Consultancy Services' %} selected {% endif %}>Tata Consultancy Services</option>
+            </select>
+            <input type="submit" value="Search" name="search">
+        </form>
+    </div>
+    </center>
+
+
+    <div class="filter">
+        <label for="start">Start Date</label>
+        <input type="date" name="" id="start">
+        <label for="end">End Date</label>
+        <input type="date" name="" id="end">
+    </div>
+    <div class="main">
+        <div>
+            {% autoescape off %}
+            {{ line_graph }}
+            {% endautoescape %}
+        </div>
+        <div>
+            {% autoescape off %}
+            {{ bar_graph }}
+            {% endautoescape %}
+        </div>
+        <div>
+            {% autoescape off %}
+            {{ candlestick_graph }}
+            {% endautoescape %}
+        </div>
+    </div>
+  </body>
+</html>
