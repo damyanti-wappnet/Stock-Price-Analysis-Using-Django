@@ -17,18 +17,41 @@ def index(request):
 
     #variable created to pass in context for dropdown select value
     selected_data = ""
-
+    start_date = "2020-01-01"
+    end_date = "2022-12-31"
+    #will check the method
     if request.method == "POST":
-        if request.POST["search"]:
-            #variable created to display selected data that can be used to render the charts
+        #will check the name
+        if request.POST.get('search'):
+            #variable created to store the stock data
             stock_data = yf.download(request.POST["drop_xc"].split('-')[0], start="2020-01-01", end="2022-12-31")
             selected_data = f'of {request.POST["drop_xc"].split("-")[1]}' 
-            print(request.POST["drop_xc"])
+         
+        elif request.POST.get('data'):
+            #variable created to store the stock data
+            stock_data = yf.download('AAPL', start=request.POST["start_date"], end=request.POST["end_date"])
+            start_date = request.POST["start_date"]
+            end_date = request.POST["end_date"]        
     
     
+    """
+    px.line() will plot line graph
+
+    parameters  -> First parameter will load dataset
+                -> x will take values for x-axis
+                -> y will take values for y-axis
+                -> title will hold the title of graph
+    """
+
+    fig = px.line(stock_data, x = stock_data.index, y = 'Close', title = f'Close price Analysis with Time Period {selected_data}')
     
-    fig = px.line(stock_data, x = stock_data.index, y = 'Close', title = 'Close price Analysis with Time Period ')
+    # update_xaxes() is used for updating the x-axis properties
+    # rangeslider_visible = True -> will put slider to arrange time duration
     fig.update_xaxes(rangeslider_visible=True)
+
+    # update_xaxes(rangeselector=dict()) is used for create a range selector on the x-axis
+    # The step parameter can be set to ( "month" | "year" | "day" | "hour" | "minute" | "second" | "all" ) 
+    # The stepmode parameter can be set to "backward" or "todate" to specify the direction of the range selector.
     fig.update_xaxes(
     rangeselector=dict(
         buttons=list([
@@ -71,7 +94,7 @@ def index(request):
     )
 )
     fig2.update_layout(
-    title = 'Close price Analysis with Time Period ',
+    title = f'Close price Analysis with Time Period {selected_data}',
     yaxis_title = 'Close Price',
     xaxis_title = 'Date'
 )
@@ -81,6 +104,8 @@ def index(request):
         'line_graph': fig.to_html(full_html=False),
         'bar_graph': fig1.to_html(full_html=False),
         'candlestick_graph': fig2.to_html(full_html=False),
-        'selected': selected_data
+        'selected': selected_data, 
+        'start_dd':start_date,
+        'end_dd':end_date
     }
     return render(request, 'index.html', context)

@@ -2,11 +2,13 @@
   <head>
     <link rel="stylesheet" href="/static/css/style.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="/static/js/index.js"></script>
   </head>
   <body>
     <center>
     <div class="company">
-        <form action="" method="post">
+        <form action="{% url 'hello' %}" method="Post" class="drop_down">
             {%csrf_token%}
             <select name="drop_xc" id="">
                 <option value="AAPL-Apple" {% if selected == 'of Apple' %} selected {% endif %}>Apple</option>
@@ -20,17 +22,23 @@
                 <option value="INTC-Intel Corporation" {% if selected == 'of Intel Corporation' %} selected {% endif %}>Intel Corporation</option>
                 <option value="TCS-Tata Consultancy Services" {% if selected == 'of Tata Consultancy Services' %} selected {% endif %}>Tata Consultancy Services</option>
             </select>
-            <input type="submit" value="Search" name="search">
+            <input type="submit" value="search" name="search" hidden>
         </form>
     </div>
     </center>
 
 
     <div class="filter">
+        <form action="{% url 'hello' %}" method="Post" class="filter1">
+            {%csrf_token%}
         <label for="start">Start Date</label>
-        <input type="date" name="" id="start">
+        <input type="date" name="start_date" id="start" value={{start_dd}}>
+
         <label for="end">End Date</label>
-        <input type="date" name="" id="end">
+        <input type="date" name="end_date" id="end" value={{end_dd}}>
+        
+        <input type="submit" value="submit" name="data" hidden>
+        </form>
     </div>
     <div class="main">
         <div>
